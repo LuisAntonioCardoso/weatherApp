@@ -1,8 +1,10 @@
 // ! dependencies
 import express from 'express';
+import NodeCache from 'node-cache';
 import {fetchWeatherData} from './lib/utils.js';
 
 const app = express();
+const cache = new NodeCache({stdTTL: 1800});
 
 const validCities = new Map([
 	['Lisboa', 2267056],
@@ -13,12 +15,22 @@ const validCities = new Map([
 ]);
 
 // ! endpoint
-app.get('/weather/', async (request, response) => {
-	const city = 'Lisboa';
+app.get('/weather/:city', async (request, response) => {
+	const city = request.params.city;
+
+	// ! check cache
+	const cachedData = cache.get(city);
+	if (cachedData) {
+		console.log(`Informação sobre ${city} obtida da cache.`);
+		return response.json(cachedData);
+	}
 
 	// ! OpenWeatherMap API request
 	try {
+		// ! fetch data
 		const weatherData = await fetchWeatherData(validCities.get(city));
+		// ! cache it
+		cache.set(city, weatherData);
 
 		console.log(`Informação sobre ${city} obtida da API OpenWeatherMap.`);
 		return response.json(weatherData);
