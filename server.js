@@ -18,6 +18,15 @@ const validCities = new Map([
 app.get('/weather/:city', async (request, response) => {
 	const city = request.params.city;
 
+	// ! validate input
+	if (!city)
+		return response.status(400).json({error: 'É necessário indicar o parametro cidade.'});
+
+	if (!validCities.has(city))
+		return response
+			.status(400)
+			.json({error: 'Valor introduzido não corresponde a uma cidade válida.'});
+
 	// ! check cache
 	const cachedData = cache.get(city);
 	if (cachedData) {
