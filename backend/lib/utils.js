@@ -14,11 +14,11 @@ export async function fetchWeatherDataById(cityId) {
 	if (!data.list) throw new Error('Invalid weather data received');
 
 	const {main, weather, wind} = data.list[0];
-	const name = data.city.name;
 
 	return {
-		name,
-		temperature: main.temp,
+		temperature: kelvinToCelsius(main.temp),
+		feelsLike: kelvinToCelsius(main.feels_like),
+		pressure: main.pressure,
 		humidity: main.humidity,
 		description: weather[0].main,
 		icon: weather[0].icon,
@@ -36,13 +36,17 @@ export async function fetchWeatherDataByCoords(latitude, longitude) {
 	if (!data) throw new Error('Invalid weather data received');
 
 	const {main, weather, wind} = data;
-	const name = data.name;
 	return {
-		name,
-		temperature: main.temp,
+		temperature: kelvinToCelsius(main.temp),
+		feelsLike: kelvinToCelsius(main.feels_like),
+		pressure: main.pressure,
 		humidity: main.humidity,
 		description: weather[0].main,
 		icon: weather[0].icon,
 		windSpeed: wind.speed
 	};
+}
+
+function kelvinToCelsius(value) {
+	return (value - 273.15).toFixed(1);
 }
