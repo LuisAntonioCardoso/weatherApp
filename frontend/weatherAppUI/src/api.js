@@ -7,3 +7,5 @@ export const geoApiOptions = {
 		'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
 	}
 };
+
+export const LOCAL_API_URL = 'http://localhost:3000/weather';
