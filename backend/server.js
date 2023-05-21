@@ -1,7 +1,7 @@
 // ! dependencies
 import express from 'express';
 import NodeCache from 'node-cache';
-import {fetchWeatherData} from './lib/utils.js';
+import {fetchWeatherDataById, fetchWeatherDataByCoords} from './lib/utils.js';
 
 const app = express();
 const cache = new NodeCache({stdTTL: 1800});
@@ -15,8 +15,8 @@ const validCities = new Map([
 ]);
 
 // ! endpoint
-app.get('/weather/:city', async (request, response) => {
-	const city = request.params.city;
+app.get('/weather/id/:cityId', async (request, response) => {
+	const city = request.params.cityId;
 
 	// ! validate input
 	if (!city)
@@ -37,7 +37,7 @@ app.get('/weather/:city', async (request, response) => {
 	// ! OpenWeatherMap API request
 	try {
 		// ! fetch data
-		const weatherData = await fetchWeatherData(validCities.get(city));
+		const weatherData = await fetchWeatherDataById(validCities.get(city));
 		// ! cache it
 		cache.set(city, weatherData);
 
@@ -45,6 +45,38 @@ app.get('/weather/:city', async (request, response) => {
 		return response.json(weatherData);
 	} catch (error) {
 		console.error(`Não foi possivel obter informação sobre o clima para a ${city}.`, error);
+		return response.status(500).json({error: 'Erro ao obter informação.'});
+	}
+});
+
+// ! endpoint
+app.get('/weather/coords/:latitude&:longitude', async (request, response) => {
+	const latitude = request.params.latitude;
+	const longitude = request.params.longitude;
+
+	// ! check cache
+	const cachedData = cache.get(latitude.toString() + ' ' + longitude.toString());
+	if (cachedData) {
+		console.log(`Informação sobre as coordenadas ${latitude}, ${longitude} obtida da cache.`);
+		return response.json(cachedData);
+	}
+
+	// ! OpenWeatherMap API request
+	try {
+		// ! fetch data
+		const weatherData = await fetchWeatherDataByCoords(latitude, longitude);
+		// ! cache it
+		cache.set(latitude.toString() + ' ' + longitude.toString(), weatherData);
+
+		console.log(
+			`Informação sobre as coordenadas ${latitude}, ${longitude} obtida da API OpenWeatherMap.`
+		);
+		return response.json(weatherData);
+	} catch (error) {
+		console.error(
+			`Não foi possivel obter informação sobre o clima para as coordenadas ${latitude}, ${longitude}.`,
+			error
+		);
 		return response.status(500).json({error: 'Erro ao obter informação.'});
 	}
 });
