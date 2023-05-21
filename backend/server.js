@@ -1,9 +1,11 @@
 // ! dependencies
 import express from 'express';
 import NodeCache from 'node-cache';
+import cors from 'cors';
 import {fetchWeatherDataById, fetchWeatherDataByCoords} from './lib/utils.js';
 
 const app = express();
+app.use(cors());
 const cache = new NodeCache({stdTTL: 1800});
 
 const validCities = new Map([
