@@ -1,4 +1,11 @@
-const WeatherCard = () => {
+const WeatherCard = ({data}) => {
+	const details = [
+		['Feels Like', data.feelsLike + ' °C'],
+		['Wind', data.windSpeed + ' m/s'],
+		['Humidity', data.humidity + '%'],
+		['Pressure', data.pressure + ' hPa']
+	];
+
 	return (
 		<>
 			<div
@@ -14,19 +21,19 @@ const WeatherCard = () => {
 							title='city'
 							className='text-lg font-semibold tracking-wide'
 						>
-							name
+							{data.city}
 						</p>
 						<p
 							title='description'
 							className='text-sm font-light tracking-wide'
 						>
-							sunny
+							{data.description}
 						</p>
 					</div>
 					<img
 						alt='weather'
 						title='image'
-						src='icons/01d.png'
+						src={`icons/${data.icon}.png`}
 						className='w-[100px]'
 					/>
 				</div>
@@ -38,7 +45,7 @@ const WeatherCard = () => {
 						title='temp'
 						className='w-auto font-semibold tracking-tighter text-7xl'
 					>
-						10ºC
+						{data.temperature}°C
 					</p>
 					<div
 						title='details'
@@ -55,74 +62,26 @@ const WeatherCard = () => {
 								Details
 							</span>
 						</div>
-						<div
-							title='param-row'
-							className='flex justify-between'
-						>
-							<span
-								title='param-label'
-								className='text-xs font-normal text-left'
+						{details.map(item => (
+							<div
+								title='param-row'
+								className='flex justify-between'
+								key={item}
 							>
-								Feels like
-							</span>
-							<span
-								title='param-value'
-								className='text-xs font-medium text-right'
-							>
-								22
-							</span>
-						</div>
-						<div
-							title='param-row'
-							className='flex justify-between'
-						>
-							<span
-								title='param-label'
-								className='text-xs font-normal text-left'
-							>
-								wind
-							</span>
-							<span
-								title='param-value'
-								className='text-xs font-medium text-right'
-							>
-								2 m/s
-							</span>
-						</div>
-						<div
-							title='param-row'
-							className='flex justify-between'
-						>
-							<span
-								title='param-label'
-								className='text-xs font-normal text-left'
-							>
-								Humidity
-							</span>
-							<span
-								title='param-value'
-								className='text-xs font-medium text-right'
-							>
-								15%
-							</span>
-						</div>
-						<div
-							title='param-row'
-							className='flex justify-between'
-						>
-							<span
-								title='param-label'
-								className='text-xs font-normal text-left'
-							>
-								Pressure
-							</span>
-							<span
-								title='param-value'
-								className='text-xs font-medium text-right'
-							>
-								15 hPa
-							</span>
-						</div>
+								<span
+									title='param-label'
+									className='text-xs font-normal text-left'
+								>
+									{item[0]}
+								</span>
+								<span
+									title='param-value'
+									className='text-xs font-medium text-right'
+								>
+									{item[1]}
+								</span>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
