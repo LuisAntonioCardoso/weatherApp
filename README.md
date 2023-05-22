@@ -26,5 +26,6 @@ To run the project:
     3.  run command: 'pnpm install' and then 'pnpm run dev'
     4.  to access the app ui: '+crl,click' the URL in the terminal or access http://localhost:(port number)/ (likely that port is 5173)
 
-In the upper size is a simple click base interface to get the weather from the cities
-In the lower size is a more advanced version with a search bar, that queries an api for the cities that start with the input given
+In the upper side is a simple click base interface to get the weather from the cities
+
+In the lower side is a more advanced version with a search bar, that queries an api for the cities that start with the input given
