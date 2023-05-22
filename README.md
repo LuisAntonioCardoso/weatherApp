@@ -8,7 +8,7 @@ I'm using:
 -   express: to create the server
 -   node-cache: to cache tha data that comes from the OpenWeatherMap api
 -   dotenv: to load the .env file isolated from the code
--             axios: to fetch data from OpenWeatherMap api(backend only)
+-   axios: to fetch data from OpenWeatherMap api(backend only)
 -   fetch: to fetch data from the backend(frontend only)
 -   AsyncPaginate component: to layout data from GeoDB Cities api
 
