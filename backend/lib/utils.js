@@ -4,11 +4,7 @@ dotenv.config();
 
 const API_KEY = `${process.env.OPEN_WEATHER_MAP_API_KEY}`;
 
-<<<<<<< HEAD
 export async function fetchWeatherDataById(cityId) {
-=======
-export async function fetchWeatherData(cityId) {
->>>>>>> c8a56e41110125a68d32eabf82108b2a9f0ea040
 	const url = `http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&APPID=${API_KEY}`;
 
 	const response = await axios.get(url);
