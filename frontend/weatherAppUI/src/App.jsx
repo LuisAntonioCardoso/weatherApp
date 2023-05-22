@@ -1,27 +1,13 @@
 import './App.css';
-import Search from './components/Search';
-import CurrentWeather from './components/WeatherCard';
-import {LOCAL_API_URL} from './api';
-import {useState} from 'react';
+import UpgradeWeatherApp from './components/UpgradeWeatherApp';
+import BaseWeatherApp from './components/BaseWeatherApp';
 
 function App() {
-	const [weatherData, setWeatherData] = useState(null);
-
-	const handleOnSearchChange = searchData => {
-		const [lat, lon] = searchData.value.split(' ');
-
-		fetch(`${LOCAL_API_URL}/coords/${lat}&${lon}`)
-			.then(response => response.json())
-			.then(response => {
-				setWeatherData({city: searchData.label, ...response});
-			})
-			.catch(error => console.log(error));
-	};
-
 	return (
 		<div className='max-w-5xl mx-auto my-5'>
-			<Search onSearchChange={handleOnSearchChange} />
-			{weatherData && <CurrentWeather data={weatherData} />}
+			<BaseWeatherApp />
+			<div className='h-[2px] bg-slate-600 my-4'></div>
+			<UpgradeWeatherApp />
 		</div>
 	);
 }
